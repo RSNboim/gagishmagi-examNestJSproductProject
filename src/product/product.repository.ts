@@ -8,10 +8,13 @@ export class ProductRepository extends Repository<Product> {
     public async createProduct(
         createProductDto: CreateProductDTO,
     ): Promise<Product> {
-        const { } = createProductDto;
+        const { name,price,description} = createProductDto;
 
         const product = new Product();
-
+        product.name=name;
+        product.description=description;
+        product.price=price;
+        
         await product.save();
         return product;
     }
@@ -20,7 +23,11 @@ export class ProductRepository extends Repository<Product> {
         createProductDto: CreateProductDTO,
         editedProduct: Product,
     ): Promise<Product> {
-        const { } = createProductDto;
+        const { name,description,price} = createProductDto;
+        editedProduct.name=name;
+        editedProduct.price=price;
+
+        editedProduct.description=description;
 
         await editedProduct.save();
 
@@ -28,25 +35,12 @@ export class ProductRepository extends Repository<Product> {
     }
 
 
-    async getProductById(id: number) {
-        const query = this.createQueryBuilder('product');
-        query.where('product.id = :id', {id: id})
-        const Product = await query.getOne()
-        return Product
-    }
+    // async getProductById(id: number) {
+    //     const query = this.createQueryBuilder('product');
+    //     query.where('product.id = :id', {id: id})
+    //     const Product = await query.getOne()
+    //     return Product
+    // }
 
 
-    async deleteProduct(id){
-        const query = this.createQueryBuilder('product');
-        query.where('product.id = :id', {id: id}).delete()
-
-
-
-    }
-
-    async getAllProducts(){
-        const query = this.createQueryBuilder('Products');
-        const products =  query.getMany()
-        return products
-    }
 }

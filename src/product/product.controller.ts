@@ -1,6 +1,7 @@
-import { Controller, Get, HttpException, HttpStatus, Delete, Post } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus, Delete, Post, Body, ValidationPipe, Patch, Param } from '@nestjs/common';
 import { CreateProductDTO } from './dto/create-product.dto';
 import { ProductService } from './product.service';
+import { Product } from './product.entity';
 
 @Controller('product')
 export class ProductController {
@@ -11,41 +12,42 @@ export class ProductController {
 
 
     @Get('all')
-    public async getProducts(): Promise<[]> {
-        // const products = await this.productService.getProducts();
-        // return products;
+    public async getProducts(): Promise<Product[]> {
+        const products = await this.productService.getProducts();
+              return products
+    } 
+
+    @Get(':id')
+    public async getProductById(@Param()id:number): Promise<Product> {
+        const product = await this.productService.getProduct(id);
+        if (!product){
         throw new HttpException({
             status: HttpStatus.FORBIDDEN,
             error: 'This is a custom message',
-        }, HttpStatus.FORBIDDEN);
-    }
-
+        }, HttpStatus.FORBIDDEN);}
+       else{return product
+    }} 
     @Post()
     createProduct(
         @Body(ValidationPipe) Product: CreateProductDTO ){
         return this.productService. createProduct(Product)
+
     }
     @Patch(':id')
   updateProduct(@Param('id') id, @Body() updateInfo: CreateProductDTO) {
-    //     console.log(`updatedUser  ${id}`,this.userService.updateUser(id,updateInfo));
-    return this.productService.updateProduct(id, updateInfo);
+    return this.productService.editProduct(id, updateInfo);
   }
 
-  @Post()
-  createProduct(@Body() details: productEntity) {
-    console.log('createUser');
-    return this.productService.createProduct(details);
-  }
-
+  
   @Delete(':id')
   deleteProduct(@Param('id') id) {
    return this.productService.deleteProduct(id);
   }
 
-  @Post('authentication')
-  validateProduct(@Body('username')username:string,@Body('password')password:string){
-console.log("username:  "+username,"password:  "+password);
+//   @Post('authentication')
+//   validateProduct(@Body('username')username:string,@Body('password')password:string){
+// console.log("username:  "+username,"password:  "+password);
 
-        return this.productService.getByUserAndPassword(username,password)
+//         return this.productService.getByUserAndPassword(username,password)
   
 }

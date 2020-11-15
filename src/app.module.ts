@@ -7,15 +7,16 @@ import { ProductModule } from './product/product.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: '????',
-      host: '?????',
-      port: '?????',
-      username: '??????',
-      password: '??????',
-      database: 'test_db',
-      entities: '??',
-      synchronize: '?????',
-    }),
+    //   type: "postgres",
+    //   host: 'localhost',
+    //   port: 5433,
+    //   username: '??????',
+    //   password: '??????',
+    //   database: 'test_db',
+    //   entities: '??',
+    //   synchronize: '?????',
+    })
+    ,
     ProductModule],
   controllers: [AppController],
   providers: [AppService],

@@ -6,10 +6,13 @@ export class Product extends BaseEntity {
         id: number;
 
         @Column()
-      productName: string;
+        name: string;
 
       @Column()
-      price: number;
-  
+      price: string;
+     
+     
+      @Column()
+      description:string;
     
 }

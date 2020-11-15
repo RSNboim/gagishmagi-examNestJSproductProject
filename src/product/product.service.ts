@@ -11,20 +11,18 @@ export class ProductService {
         private productRepository: ProductRepository,
     ) { }
 
-    public async createProduct(
-        createProductDto: CreateProductDTO,
-    ): Promise<Product> {
+    public async createProduct(createProductDto: CreateProductDTO,): Promise<Product> {
         return await this.productRepository.createProduct(createProductDto)//create product
     }
 
 
     public async getProducts(): Promise<Product[]> {
-        return await this.productRepository.getAllProducts();// find all
+        return await this.productRepository.find();// find all
     }
 
 
     public async getProduct(productId: number): Promise<Product> {
-        const foundProduct =   this.productRepository.getProductById(productId) //findOne
+        const foundProduct =   this.productRepository.findOne(productId) //findOne
         if (!foundProduct) {
             throw new NotFoundException('Product not found');
         }
@@ -32,20 +30,20 @@ export class ProductService {
     }
 
 
-    public async editProduct(
+    public async  editProduct(
         productId: number,
         createProductDto: CreateProductDTO,
     ): Promise<Product> {
-       const current= this.productRepository.getProductById(productId)       
-        const editedProduct = this.productRepository.editProduct(createProductDto,current); //find One
+       const editedProduct=  await this.productRepository.findOne(productId)       
+        // const editedProduct = this.productRepository.editProduct(createProductDto,current); //find One
         if (!editedProduct) {
             throw new NotFoundException('Product not found');
         }
-        return editedProduct ; // Edit Product
+        return this.productRepository.editProduct(createProductDto,editedProduct); ; // Edit Product
     }
 
 
     public async deleteProduct(productId: number): Promise<void> {
-        await this.productRepository.deleteProduct(productId) // delete product
+        await this.productRepository.delete(productId) // delete product
     }
 }
